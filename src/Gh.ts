@@ -26,9 +26,7 @@ export class Gh {
   logger: Logger;
 
   constructor(context: Context, logger: Logger) {
-    const token = match(process.env.NODE_ENV)
-      .with("production", () => getInput("GITHUB_TOKEN"))
-      .otherwise(() => process.env.GITHUB_TOKEN as string);
+    const token = getInput("GITHUB_TOKEN");
     // @ts-expect-error
     this.octokit = getOctokit(token, {
       timeZone: "Canada/Vancouver",
