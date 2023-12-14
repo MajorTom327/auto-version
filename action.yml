@@ -4,7 +4,7 @@ description: GitHub Action to generate a new version for NPM packages.
 author: majortom327
 
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
 
 inputs:
