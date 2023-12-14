@@ -1,0 +1,59 @@
+{
+  "name": "@majortom327/auto-version",
+  "version": "0.0.1",
+  "description": "A simple tool to automatically increment the version number in your package.json file.",
+  "keywords": [
+    "version",
+    "auto",
+    "increment",
+    "package.json",
+    "github",
+    "github actions"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "author": {
+    "name": "Valentin Thomas",
+    "email": "github@valentin-thomas.com",
+    "url": "https://valentin-thomas.com"
+  },
+  "files": [
+    "dist",
+    "action.yml"
+  ],
+  "scripts": {
+    "build": "rm -rdf dist && rollup -c",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest -c ./test/vitest.config.ts --ui ",
+    "test:ci": "vitest -c ./test/vitest.config.ts run"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "@technote-space/github-action-helper": "^5.3.17",
+    "@technote-space/github-action-log-helper": "^0.2.19",
+    "fs-extra": "^11.2.0",
+    "ramda": "^0.29.1",
+    "ramda-adjunct": "^4.1.1",
+    "ts-pattern": "^5.0.6",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/dotenv": "^8.2.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.10.4",
+    "@types/ramda": "^0.29.9",
+    "@vitest/ui": "^1.0.4",
+    "dotenv": "^16.3.1",
+    "rollup": "^4.9.0",
+    "tslib": "^2.6.2",
+    "vite": "^5.0.8",
+    "vite-tsconfig-paths": "^4.2.2",
+    "vitest": "^1.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

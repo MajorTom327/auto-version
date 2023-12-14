@@ -1,0 +1,13 @@
+name: Auto NPM Versioner
+description: GitHub Action to generate a new version for NPM packages.
+author: majortom327
+
+runs:
+  using: node16
+  main: dist/index.js
+
+inputs:
+  GITHUB_TOKEN:
+    description: Secret GitHub API token to use for making API requests.
+    default: ${{ github.token }}
+    required: false

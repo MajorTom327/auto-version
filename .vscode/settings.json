@@ -1,0 +1,9 @@
+{
+  "files.exclude": {
+    "dist": true
+  },
+  "prettier.bracketSpacing": true,
+  "prettier.enable": true,
+  "eslint.enable": true,
+  "eslint.format.enable": true
+}
