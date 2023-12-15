@@ -27,9 +27,7 @@ export class Gh {
   constructor(context: Context, logger: Logger) {
     const token = getInput("GITHUB_TOKEN");
     // @ts-expect-error
-    this.octokit = getOctokit(token, {
-      timeZone: "Canada/Vancouver",
-    });
+    this.octokit = getOctokit(token, {});
 
     this.context = context;
     this.logger = logger;
@@ -57,11 +55,14 @@ export class Gh {
         );
       })
       .then((packages) => {
-        // @ts-expect-error
+
         const latestVersion: { major: number; minor: number; patch: number } =
           compose(
+            tap((x: any) => this.logger.info(x)),
             head,
+            tap((x: any) => this.logger.info(x)),
             sortByProps(["major", "minor", "patch"]),
+            tap((x: any) => this.logger.info(x)),
             map(
               applySpec({
                 // @ts-expect-error
@@ -72,8 +73,11 @@ export class Gh {
                 patch: compose(parseInt, nth(2), split(".")),
               })
             ),
+            tap((x: any) => this.logger.info(x)),
             map(propOr("0.0.0", "name")),
-            propOr([], "data")
+            tap((x: any) => this.logger.info(x)),
+            propOr([], "data"),
+            tap((x: any) => this.logger.info(x))
           )(packages);
 
         this.logger.info(
