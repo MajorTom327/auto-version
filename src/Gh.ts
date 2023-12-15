@@ -58,11 +58,11 @@ export class Gh {
 
         const latestVersion: { major: number; minor: number; patch: number } =
           compose(
-            tap(console.log),
+            tap((x) => this.logger.info(JSON.stringify(x))),
             head,
-            tap(console.log),
+            tap((x) => this.logger.info(JSON.stringify(x))),
             sortByProps(["major", "minor", "patch"]),
-            tap(console.log),
+            tap((x) => this.logger.info(JSON.stringify(x))),
             map(
               applySpec({
                 // @ts-expect-error
@@ -73,11 +73,11 @@ export class Gh {
                 patch: compose(parseInt, nth(2), split(".")),
               })
             ),
-            tap(console.log),
+            tap((x) => this.logger.info(JSON.stringify(x))),
             map(propOr("0.0.0", "name")),
-            tap(console.log),
+            tap((x) => this.logger.info(JSON.stringify(x))),
             propOr([], "data"),
-            tap(console.log)
+            tap((x) => this.logger.info(JSON.stringify(x)))
           )(packages);
 
         this.logger.info(
