@@ -30,7 +30,7 @@ const run = async () => {
     logger.info(
       `Getting latest version for ${repository} from registry and incrementing patch version`
     );
-    const latestVersion = gh.getLatestVersion(repository);
+    const latestVersion = await gh.getLatestVersion(repository);
     // @ts-expect-error type
     updatedVersion = compose(
       join("."),
