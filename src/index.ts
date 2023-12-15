@@ -21,20 +21,25 @@ const run = async () => {
     context.eventName === "push" &&
     context.ref.startsWith("refs/tags/") &&
     false; // Hack: Doesn't enable the tag for now
-  const updatedVersion = await match(isTag)
-    // Hack: Doesn't enable the tag for now
-    // .with(true, () => Promise.resolve(context.ref.replace("refs/tags/", "")))
-    .otherwise(async () => {
-      const latestVersion = gh.getLatestVersion(repository);
-      // @ts-expect-error type
-      return compose(
-        join("."),
-        props(["major", "minor", "patch"]),
-        evolve({
-          patch: inc,
-        })
-      )(latestVersion);
-    });
+
+  let updatedVersion: string;
+  if (isTag) {
+    logger.info(`Getting latest version for ${repository} from tag`);
+    updatedVersion = context.ref.replace("refs/tags/", "");
+  } else {
+    logger.info(
+      `Getting latest version for ${repository} from registry and incrementing patch version`
+    );
+    const latestVersion = gh.getLatestVersion(repository);
+    // @ts-expect-error type
+    updatedVersion = compose(
+      join("."),
+      props(["major", "minor", "patch"]),
+      evolve({
+        patch: inc,
+      })
+    )(latestVersion);
+  }
 
   return fs
     .readFile("./package.json", "utf8")
