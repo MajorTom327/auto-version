@@ -22,7 +22,8 @@ const run = async () => {
     context.ref.startsWith("refs/tags/") &&
     false; // Hack: Doesn't enable the tag for now
   const updatedVersion = await match(isTag)
-    .with(true, () => Promise.resolve(context.ref.replace("refs/tags/", "")))
+    // Hack: Doesn't enable the tag for now
+    // .with(true, () => Promise.resolve(context.ref.replace("refs/tags/", "")))
     .otherwise(async () => {
       const latestVersion = gh.getLatestVersion(repository);
       // @ts-expect-error type

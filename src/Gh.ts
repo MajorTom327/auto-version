@@ -17,7 +17,6 @@ import {
   tap,
 } from "ramda";
 import { sortByProps } from "ramda-adjunct";
-import { match } from "ts-pattern";
 
 export class Gh {
   octokit: Octokit;
@@ -48,6 +47,7 @@ export class Gh {
         return result;
       })
       .catch((err) => {
+        this.logger.warn(err.message);
         return this.octokit.rest.packages.getAllPackageVersionsForPackageOwnedByOrg(
           {
             org: owner,
@@ -75,12 +75,18 @@ export class Gh {
             map(propOr("0.0.0", "name")),
             propOr([], "data")
           )(packages);
+
+        this.logger.info(
+          `Latest version is ${latestVersion.major}.${latestVersion.minor}.${latestVersion.patch}`
+        );
         return latestVersion;
       });
   }
 
   async commit(version: string) {
     const branch = "main";
+
+    this.logger.info(`Committing to branch ${branch}, version ${version}`);
 
     const helper = new ApiHelper(this.octokit, this.context, this.logger, {
       refForUpdate: `heads/${branch}`,
