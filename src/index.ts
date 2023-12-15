@@ -18,7 +18,9 @@ const run = async () => {
   // then the latestVersion is equal to the tag name
 
   const isTag =
-    context.eventName === "push" && context.ref.startsWith("refs/tags/");
+    context.eventName === "push" &&
+    context.ref.startsWith("refs/tags/") &&
+    false; // Hack: Doesn't enable the tag for now
   const updatedVersion = await match(isTag)
     .with(true, () => Promise.resolve(context.ref.replace("refs/tags/", "")))
     .otherwise(async () => {
@@ -33,22 +35,21 @@ const run = async () => {
       )(latestVersion);
     });
 
+  return fs
+    .readFile("./package.json", "utf8")
+    .then((data) => {
+      const updatedData = assoc("version", updatedVersion, JSON.parse(data));
 
-    return fs
-      .readFile("./package.json", "utf8")
-      .then((data) => {
-        const updatedData = assoc("version", updatedVersion, JSON.parse(data));
-
-        return updatedData;
-      })
-      .then((updatedPackage) => {
-        return fs.writeFile("./package.json", JSON.stringify(updatedPackage));
-      })
-      .then(() => {
-        logger.info(`Updated package.json to version ${updatedVersion}`);
-        gh.commit(updatedVersion);
-      })
-      .then(() => true);
+      return updatedData;
+    })
+    .then((updatedPackage) => {
+      return fs.writeFile("./package.json", JSON.stringify(updatedPackage));
+    })
+    .then(() => {
+      logger.info(`Updated package.json to version ${updatedVersion}`);
+      gh.commit(updatedVersion);
+    })
+    .then(() => true);
 };
 
 run().catch((error) => {
