@@ -49,7 +49,10 @@ const run = async () => {
       return updatedData;
     })
     .then((updatedPackage) => {
-      return fs.writeFile("./package.json", JSON.stringify(updatedPackage));
+      return fs.writeFile(
+        "./package.json",
+        JSON.stringify(updatedPackage, null, 2)
+      );
     })
     .then(() => {
       logger.info(`Updated package.json to version ${updatedVersion}`);
