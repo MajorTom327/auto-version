@@ -11,10 +11,9 @@ import {
   head,
   map,
   nth,
-  prop,
   propOr,
   split,
-  tap,
+  reverse,
 } from "ramda";
 import { sortByProps } from "ramda-adjunct";
 
@@ -55,30 +54,23 @@ export class Gh {
         );
       })
       .then((packages) => {
-
-        const latestVersion: { major: number; minor: number; patch: number } =
-          compose(
-            tap((x) => this.logger.info(JSON.stringify(x))),
-            head,
-            tap((x) => this.logger.info(JSON.stringify(x))),
-            sortByProps(["major", "minor", "patch"]),
-            tap((x) => this.logger.info(JSON.stringify(x))),
-            map(
-              applySpec({
-                // @ts-expect-error
-                major: compose(parseInt, nth(0), split(".")),
-                // @ts-expect-error
-                minor: compose(parseInt, nth(1), split(".")),
-                // @ts-expect-error
-                patch: compose(parseInt, nth(2), split(".")),
-              })
-            ),
-            tap((x) => this.logger.info(JSON.stringify(x))),
-            map(propOr("0.0.0", "name")),
-            tap((x) => this.logger.info(JSON.stringify(x))),
-            propOr([], "data"),
-            tap((x) => this.logger.info(JSON.stringify(x)))
-          )(packages);
+        const latestVersion = compose(
+          head,
+          reverse,
+          sortByProps(["major", "minor", "patch"]),
+          map(
+            applySpec({
+              // @ts-expect-error cf above
+              major: compose(parseInt, nth(0), split(".")),
+              // @ts-expect-error cf above
+              minor: compose(parseInt, nth(1), split(".")),
+              // @ts-expect-error cf above
+              patch: compose(parseInt, nth(2), split(".")),
+            })
+          ),
+          map(propOr("0.0.0", "name")),
+          propOr([], "data")
+        )(packages) as { major: number; minor: number; patch: number };
 
         this.logger.info(
           `Latest version is ${latestVersion.major}.${latestVersion.minor}.${latestVersion.patch}`
