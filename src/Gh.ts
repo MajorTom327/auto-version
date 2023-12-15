@@ -77,7 +77,7 @@ export class Gh {
             map(propOr("0.0.0", "name")),
             tap(console.log),
             propOr([], "data"),
-            tap((x: any) => this.logger.info(x))
+            tap(console.log)
           )(packages);
 
         this.logger.info(
