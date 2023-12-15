@@ -33,16 +33,20 @@ const run = async () => {
       )(latestVersion);
     });
 
-  fs.readFile("./package.json", "utf8")
-    .then((data) => {
-      const updatedData = assoc("version", updatedVersion, JSON.parse(data));
 
-      return updatedData;
-    })
-    .then((updatedPackage) => {
-      return fs.writeFile("./package.json", JSON.stringify(updatedPackage));
-    })
-    .then(() => {});
+    fs.readFile("./package.json", "utf8")
+      .then((data) => {
+        const updatedData = assoc("version", updatedVersion, JSON.parse(data));
+
+        return updatedData;
+      })
+      .then((updatedPackage) => {
+        return fs.writeFile("./package.json", JSON.stringify(updatedPackage));
+      })
+      .then(() => {
+        logger.info(`Updated package.json to version ${updatedVersion}`);
+        gh.commit(updatedVersion);
+      });
 };
 
 run().catch((error) => {
