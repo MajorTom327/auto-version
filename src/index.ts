@@ -34,7 +34,8 @@ const run = async () => {
     });
 
 
-    fs.readFile("./package.json", "utf8")
+    return fs
+      .readFile("./package.json", "utf8")
       .then((data) => {
         const updatedData = assoc("version", updatedVersion, JSON.parse(data));
 
@@ -46,7 +47,8 @@ const run = async () => {
       .then(() => {
         logger.info(`Updated package.json to version ${updatedVersion}`);
         gh.commit(updatedVersion);
-      });
+      })
+      .then(() => true);
 };
 
 run().catch((error) => {
