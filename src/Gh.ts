@@ -52,6 +52,15 @@ export class Gh {
             package_name: repo,
           }
         );
+      }).catch((err) => {
+        this.logger.warn(err.message);
+        return this.octokit.rest.packages.getAllPackageVersionsForPackageOwnedByUser(
+          {
+            username: owner,
+            package_type: "npm",
+            package_name: repo,
+          }
+        );
       })
       .then((packages) => {
         const latestVersion = compose(
