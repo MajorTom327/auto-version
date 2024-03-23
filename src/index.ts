@@ -1,6 +1,6 @@
 import { setFailed, getInput } from "@actions/core";
 import { Context } from "@actions/github/lib/context";
-import { compose, join, props, evolve, inc, assoc } from "ramda";
+import { compose, join, props, evolve, inc, assoc, split } from "ramda";
 import { Gh } from "./Gh";
 import * as fs from "fs-extra";
 
@@ -35,7 +35,13 @@ const run = async () => {
         .readFile("package.json", "utf8")
         .then((data) => JSON.parse(data))
         .then((pkg) => pkg.version ?? "0.0.0")
-        .then((version) => "v" + version);
+        .then((version) => {
+          const [major, minor, patch] = split(".")(version);
+
+          return {
+            major, minor, patch
+          }
+        });
     });
     // @ts-expect-error type
     updatedVersion = compose(
