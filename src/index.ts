@@ -39,9 +39,9 @@ const run = async () => {
           const [major, minor, patch] = split(".")(previousVersion);
 
           const version = {
-            major: major ?? 0,
-            minor: minor ?? 0,
-            patch: patch ?? 0,
+            major: ~~major,
+            minor: ~~minor,
+            patch: ~~patch,
           };
 
           console.log("New version:", { version });
