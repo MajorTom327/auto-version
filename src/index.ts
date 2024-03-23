@@ -30,7 +30,13 @@ const run = async () => {
     logger.info(
       `Getting latest version for ${repository} from registry and incrementing patch version`
     );
-    const latestVersion = await gh.getLatestVersion(repository);
+    const latestVersion = await gh.getLatestVersion(repository).catch(() => {
+      return fs
+        .readFile("package.json", "utf8")
+        .then((data) => JSON.parse(data))
+        .then((pkg) => pkg.version ?? "0.0.0")
+        .then((version) => "v" + version);
+    });
     // @ts-expect-error type
     updatedVersion = compose(
       join("."),
