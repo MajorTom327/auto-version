@@ -34,7 +34,7 @@ const run = async () => {
       return fs
         .readFile("package.json", "utf8")
         .then((data) => JSON.parse(data))
-        .then((pk) => {
+        .then((pkg) => {
           const previousVersion = pkg.version ?? "0.0.0";
           const [major, minor, patch] = split(".")(previousVersion);
 
