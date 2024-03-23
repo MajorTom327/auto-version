@@ -34,13 +34,19 @@ const run = async () => {
       return fs
         .readFile("package.json", "utf8")
         .then((data) => JSON.parse(data))
-        .then((pkg) => pkg.version ?? "0.0.0")
-        .then((version) => {
-          const [major, minor, patch] = split(".")(version);
+        .then((pk) => {
+          const previousVersion = pkg.version ?? "0.0.0";
+          const [major, minor, patch] = split(".")(previousVersion);
 
-          return {
-            major, minor, patch
-          }
+          const version = {
+            major: major ?? 0,
+            minor: minor ?? 0,
+            patch: patch ?? 0,
+          };
+
+          console.log("New version:", { version });
+
+          return v;
         });
     });
     // @ts-expect-error type
