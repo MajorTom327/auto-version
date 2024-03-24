@@ -46,7 +46,7 @@ const run = async () => {
 
           console.log("New version:", { version });
 
-          return v;
+          return version;
         });
     });
     // @ts-expect-error type
