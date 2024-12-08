@@ -104,6 +104,8 @@ export class Gh {
       "package.json",
     ]);
 
+    setOutput("version", version);
+
     setOutput("sha", process.env.GITHUB_SHA + "");
   }
 }
