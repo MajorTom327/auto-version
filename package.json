@@ -1,6 +1,6 @@
 {
   "name": "@majortom327/auto-version",
-  "version": "0.0.2",
+  "version": "0.0.9",
   "description": "A simple tool to automatically increment the version number in your package.json file.",
   "keywords": [
     "version",
